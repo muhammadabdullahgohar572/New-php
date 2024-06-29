@@ -55,21 +55,59 @@
 
 
 
-
     <?php
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $username = $_POST['username'];
+        $Name = $_POST['username'];
         $Fathername = $_POST['Fathername'];
         $city = $_POST['city'];
         
-        if ($username !== "" && $Fathername !== ""&& $city !=="") {
-            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>';
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $databasename = "Abdullah25";
+
+        // Create connection
+        $conn = mysqli_connect($servername, $username, $password, $databasename);
+
+        // Check connection
+        if (!$conn) {
+            die("Connection failed: " . mysqli_connect_error());
+        } else {
+            echo "Connected successfully";
         }
-    }
-    ?> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+
+  
+
+        // Fix SQL query with proper quoting and escaping
+        $sql = "INSERT INTO `userData` (`Name`, `FatherName`, `City`) VALUES ('$Name', '$Fathername', '$city')";
+
+        // Perform a query, check for errors
+        if (mysqli_query($conn, $sql)) {
+            echo "New record created successfully";
+            echo "your table Data successfully Insert"."<br />";
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+        } else {
+            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        }
+
+        // Close connection
+        mysqli_close($conn);
+}
+
+?>
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 </body>
